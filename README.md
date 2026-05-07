@@ -160,25 +160,4 @@ The tool's structure is defined in `dimensions.json`. Each dimension has a `name
 
 Changes take effect on the next page load — no rebuild required.
 
-## Tech Stack
 
-| Component | Technology |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Node.js, Express |
-| State Storage | Local JSON files |
-| Charting | Chart.js |
-
-## Legal Disclaimer
-
-**Data Privacy:** State files are stored as plain JSON on your local machine. You are responsible for securing any sensitive data.
-
-**PII:** Do not input personally identifiable information into `dimensions.json` or assessment notes.
-
-**Liability:** The creators and distributors of this tool are not liable for any data breaches or legal issues arising from its use.
-
-## License
-
-This project is open source and licensed under the [GNU General Public License v3.0](./LICENSE).
-
-© 2026 Mike Rossiter
