@@ -4,7 +4,7 @@
 
 **Assess. Track. Improve.**
 
-A lightweight, self-hosted tool for measuring and driving DevOps adoption across your organisation.
+A lightweight, local tool for measuring and driving DevOps adoption across your organisation.
 
 ---
 
@@ -16,18 +16,18 @@ A lightweight, self-hosted tool for measuring and driving DevOps adoption across
 
 Most DevOps transformations stall because teams lack a clear picture of where they are and where they need to go. This tool gives you that picture — a structured, data-driven assessment across six integrated dimensions, paired with gap analysis and time-series tracking to keep improvement efforts honest and on course.
 
-It runs locally or in a container, stores everything in a lightweight SQLite database, and requires no external services.
+It runs locally, stores state as plain JSON files on your machine, and supports multiple projects or organisations — each with their own isolated assessment history.
 
 ## Features
 
 | | |
 |---|---|
 | **Multi-Dimensional Assessment** | Evaluate maturity across 6 dimensions and 18 sub-dimensions on a 4-level scale |
+| **Project-Based State** | Run the model against different projects or organisations, each with their own saved history |
 | **Gap Analysis Reports** | Generate printable reports showing current state, target state, and space for action plans |
 | **Time-Series Tracking** | Save snapshots over time and visualise adoption trends on an interactive graph |
 | **Fully Customisable** | Modify `dimensions.json` to tailor dimensions, levels, and descriptions to your context |
-| **Persistent State** | SQLite-backed storage that survives container restarts via Docker volumes |
-| **Zero External Dependencies** | No cloud services, no accounts — runs entirely on your infrastructure |
+| **Local JSON Storage** | State files are plain `.json` files saved to a `states/` directory — easy to inspect, back up, or share |
 
 ## Dimensions
 
@@ -55,10 +55,9 @@ Each sub-dimension is rated across four maturity levels:
 
 ### Prerequisites
 
-- **Node.js** (for local deployment), or
-- **Docker** (for containerised deployment)
+- **Node.js** (v18 or later) — [nodejs.org](https://nodejs.org)
 
-### Option 1 — Run with Node.js
+### Install and Run
 
 ```bash
 git clone <repository-url>
@@ -67,63 +66,55 @@ npm install
 npm start
 ```
 
-Open [http://localhost:3131](http://localhost:3131).
+Open [http://localhost:3131](http://localhost:3131) in your browser.
 
-### Option 2 — Run with Docker
-
-```bash
-docker run -d \
-  --name devops-maturity-model \
-  --restart=always \
-  -p 3131:3131 \
-  -v devops_data:/app/data \
-  registry.gitlab.com/devops-maturity-model/devops-maturity-model:latest
-```
-
-The `-v devops_data:/app/data` flag ensures your SQLite database persists across container restarts.
-
-**To update:**
+To use a different port:
 
 ```bash
-docker stop devops-maturity-model
-docker rm devops-maturity-model
-docker pull registry.gitlab.com/devops-maturity-model/devops-maturity-model:latest
+PORT=8080 npm start
 ```
 
-Then re-run the `docker run` command above.
+### First Use
 
-### Uninstall
+When you open the tool for the first time, you'll be prompted to create or select a project. Enter a name for the organisation or engagement you're assessing (e.g. `Acme Corp`). The tool will remember this between sessions.
 
-**Node.js:**
+To switch projects, click **Change Project** at the top of the page. Each project has its own independent assessment history.
 
-```bash
-npm stop
+### Stopping the Server
+
+Press `Ctrl+C` in the terminal where the server is running.
+
+## State Files
+
+Each time you click **Save State**, a timestamped snapshot is written to:
+
+```
+states/<project-name>/YYYY-MM-DDTHH-MM-SS.json
 ```
 
-**Docker:**
+These are plain JSON files you can open, inspect, copy, or move between machines. The `states/` directory is excluded from git by default — manage it however suits your workflow.
 
-```bash
-docker stop devops-maturity-model
-docker rm devops-maturity-model
-docker rmi registry.gitlab.com/devops-maturity-model/devops-maturity-model:latest
-docker volume rm devops_data
-```
+To restore a previous snapshot, click **Load State** and select a date from the list.
 
 ## How It Works
 
-### 1. Survey Your Baseline
+### 1. Select Your Project
+
+On launch, name the organisation or project you're assessing. You can create multiple projects and switch between them at any time.
+
+### 2. Survey Your Baseline
 
 Start by understanding your current DevOps state. Consider running the [DORA Quick Check](https://dora.dev/quickcheck/) or a similar questionnaire, and map your workflows using [Value Stream Mapping](https://dora.dev/guides/value-stream-management/) to identify bottlenecks.
 
-### 2. Assess Each Sub-Dimension
+### 3. Assess Each Sub-Dimension
 
 For each of the 18 sub-dimensions, select the maturity level that best reflects your current practice. The tool calculates an overall maturity score and percentage to give you a snapshot of your DevOps posture.
 
-### 3. Generate a Gap Analysis
+### 4. Generate a Gap Analysis
 
 Save your state and open the Gap Analysis report. It shows your current level alongside the next target level for every sub-dimension, with space to document improvement actions — a practical input for your transformation backlog.
 
-### 4. Plan and Iterate
+### 5. Plan and Iterate
 
 Use a structured improvement approach:
 
@@ -136,11 +127,11 @@ Use a structured improvement approach:
 
 This aligns with the [Improvement Kata](https://dora.dev/guides/devops-culture-transform/) approach recommended by DORA.
 
-### 5. Track Progress Over Time
+### 6. Track Progress Over Time
 
 Each time you save, a timestamped snapshot is stored. Use the **Time Series Graph** to visualise adoption trends across all dimensions — spot improvements, stagnation, or regression at a glance.
 
-### 6. Align with DORA Metrics
+### 7. Align with DORA Metrics
 
 Use your assessment alongside the four key DORA metrics to measure real-world delivery performance:
 
@@ -175,13 +166,12 @@ Changes take effect on the next page load — no rebuild required.
 |---|---|
 | Frontend | HTML, CSS, JavaScript |
 | Backend | Node.js, Express |
-| Database | SQLite |
+| State Storage | Local JSON files |
 | Charting | Chart.js |
-| Container | Docker (Alpine) |
 
 ## Legal Disclaimer
 
-**Data Privacy:** This tool does not include built-in encryption for the SQLite database. Users are responsible for securing any data entered.
+**Data Privacy:** State files are stored as plain JSON on your local machine. You are responsible for securing any sensitive data.
 
 **PII:** Do not input personally identifiable information into `dimensions.json` or assessment notes.
 

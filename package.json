@@ -1,17 +1,16 @@
 {
   "name": "devops-maturity-assessment-tool",
-  "version": "2.6.8",
+  "version": "3.0.0",
   "scripts": {
     "start": "node src/server.js"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "markdown-it": "^14.1.0",
-    "sqlite3": "^5.1.7"
+    "markdown-it": "^14.1.0"
   },
   "main": "script.js",
   "keywords": [],
   "author": "Mike Rossiter",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "description": "A web application for assessing and tracking DevOps maturity across multiple dimensions."
 }

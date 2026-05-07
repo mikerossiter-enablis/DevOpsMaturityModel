@@ -21,9 +21,18 @@
 
   <h1>DevOps Maturity Assessment Tool</h1>
   <sub>Use the dimensions below to assess your current state</sub>
+
+  <!-- Project Name -->
+  <div id="project-banner">
+    <label for="project-name-input">Project</label>
+    <input type="text" id="project-name-input" placeholder="Enter project or organisation name">
+  </div>
+
+  <!-- Hidden file input for loading state -->
+  <input type="file" id="state-file-input" accept=".json" style="display:none">
+
   <!-- Container for Table -->
   <div class="model-container">
-    <!-- Table Wrapper -->
     <div class="table-wrapper">
       <table id="model-table">
         <tbody id="table-body"></tbody>
@@ -37,16 +46,17 @@
     <div id="level-description"></div>
   </div>
 
-  <!-- Buttons Container (displayed in a row at the bottom) -->
+  <!-- Buttons Container -->
   <div id="buttons-container">
     <button id="save-state-btn">Save State</button>
     <button id="load-state-btn">Load State</button>
-    <button id="reset-state-btn">Reset State</button>
+    <button id="reset-state-btn">Reset</button>
     <button onclick="window.open('graph.html', '_blank')">Time Series Graph</button>
     <button onclick="window.open('/readme', '_blank')">View README</button>
     <button onclick="window.open('/gap-analysis', '_blank')">Gap Analysis</button>
   </div>
   <p><em>Track progress. Spot gaps. Improve continuously.</em></p>
   <sub>Created by Mike Rossiter · Licensed under <a href="/license" target="_blank">GPL v3.0</a></sub>
+
 </body>
 </html>

@@ -255,6 +255,51 @@ button:active {
   background: linear-gradient(90deg, #1e8449, #27ae60);
 }
 
+/* === Project Banner === */
+#project-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px auto 0;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #1e2430 0%, #252b38 100%);
+  border: 1px solid #3b4252;
+  border-radius: 8px;
+  width: fit-content;
+  max-width: 90%;
+}
+
+#project-banner label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+#project-name-input {
+  width: 280px;
+  padding: 6px 10px;
+  border: 1px solid #3b4252;
+  border-radius: 6px;
+  background: #2e3440;
+  color: #81a1c1;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Lato', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#project-name-input::placeholder {
+  color: #4b5563;
+  font-weight: 400;
+}
+
+#project-name-input:focus {
+  border-color: #81a1c1;
+}
+
 /* === Footer === */
 p em {
   color: #6b7280;

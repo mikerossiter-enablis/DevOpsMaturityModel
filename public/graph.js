@@ -46,7 +46,7 @@ fetch("dimensions.json")
         // Then sort them chronologically.
         const stateData = stateRows.map(row => ({
           timestamp: new Date(row.timestamp),
-          selectedLevels: JSON.parse(row.state).selectedLevels
+          selectedLevels: row.state.selectedLevels
         })).sort((a, b) => a.timestamp - b.timestamp);
 
         // Build a Chart.js dataset for each dimension in dimensions.json.

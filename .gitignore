@@ -25,6 +25,5 @@ dist/
 coverage/
 package-lock.json
 
-# DB files
-data/
-model_state.db
+# State files (project assessment data — stored locally, not committed)
+states/
