@@ -69,9 +69,9 @@ fetch("dimensions.json")
               }
               total += val;
             }
-            // Compute progress as sumOfLevels / (5 * subCount) * 100
-            // e.g. if everything is level 4 => (4/5=80%) for each subdim => overall 80%.
-            const progress = (total / (5 * subCount)) * 100;
+            // Compute progress as sumOfLevels / (4 * subCount) * 100
+            // Level 4 is the maximum, so full adoption = 100%.
+            const progress = (total / (4 * subCount)) * 100;
 
             return { x: state.timestamp, y: progress };
           });

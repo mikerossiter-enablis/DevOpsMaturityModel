@@ -32,6 +32,21 @@ if (!fs.existsSync(STATES_DIR)) fs.mkdirSync(STATES_DIR, { recursive: true });
 let currentState = null;
 let currentProject = null;
 
+// Auto-load most recent state file on startup so gap analysis works immediately
+(function loadLatestState() {
+  try {
+    const files = fs.readdirSync(STATES_DIR)
+      .filter(f => f.endsWith('.json'))
+      .sort()
+      .reverse();
+    if (files.length > 0) {
+      const data = JSON.parse(fs.readFileSync(path.join(STATES_DIR, files[0]), 'utf8'));
+      currentState = data.state;
+      currentProject = data.project || null;
+    }
+  } catch (e) {}
+})();
+
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 
