@@ -144,6 +144,7 @@ Use your assessment alongside the four key DORA metrics to measure real-world de
 
 ### Further Reading
 
+- [**Westrum Organisational Culture**](https://itrevolution.com/articles/westrums-organizational-model-in-tech-orgs/) - IT Revolution
 - [**Accelerate**](https://itrevolution.com/product/accelerate/) — Nicole Forsgren, Jez Humble, Gene Kim
 - [**The DevOps Handbook**](https://itrevolution.com/product/the-devops-handbook-second-edition/) — Gene Kim, Jez Humble, Patrick Debois, John Willis, Nicole Forsgren
 - [**Team Topologies**](https://teamtopologies.com/book) — Matthew Skelton, Manuel Pais
