@@ -11,6 +11,6 @@
   "main": "script.js",
   "keywords": [],
   "author": "Mike Rossiter",
-  "license": "GPL-3.0-or-later",
+  "license": "UNLICENSED",
   "description": "A web application for assessing and tracking DevOps maturity across multiple dimensions."
 }
