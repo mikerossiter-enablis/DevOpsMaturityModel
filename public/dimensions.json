@@ -6,7 +6,7 @@
       {
         "name": "Version Control & Trunk-Based Development",
         "description": "Using a single source of truth (version control) and short-lived branches or direct commits on trunk.",
-        "improves": ["Deployment Frequency", "Lead Time for Changes"],
+        "improves": ["Deployment Frequency", "Change Lead Time"],
         "levels": [
           "Foundational: Teams are establishing consistent version control, sometimes using longer-lived branches with occasional merging considerations.",
           "Improving: Code is largely in version control, with efforts to reduce merge duration and complexity.",
@@ -16,35 +16,35 @@
       },
       {
         "name": "Continuous Integration & Test Automation",
-        "description": "Automatically building and testing changes in a shared codebase.",
-        "improves": ["Deployment Frequency", "Change Failure Rate"],
+        "description": "Automatically building, testing, and reviewing changes in a shared codebase to maintain quality and provide rapid feedback.",
+        "improves": ["Deployment Frequency", "Change Fail Rate"],
         "levels": [
-          "Foundational: Builds and tests incorporate some manual steps; initial automated checks are being introduced.",
-          "Improving: Unit tests are automated in a CI pipeline, and teams are working to increase coverage.",
-          "Accelerating: Comprehensive suites (unit, integration, security) run automatically, ensuring rapid feedback in CI.",
-          "Leading: Extensive automated tests with near-complete coverage, providing immediate quality insights and swift iteration."
+          "Foundational: Builds and tests incorporate some manual steps; initial automated checks and informal code review are being established.",
+          "Improving: Unit tests are automated in a CI pipeline, and structured code review practices are emerging alongside increasing test coverage.",
+          "Accelerating: Comprehensive suites (unit, integration, security) plus peer review gates run automatically, ensuring rapid quality feedback.",
+          "Leading: Extensive automated tests with near-complete coverage and a collaborative review culture, providing immediate insights and supporting knowledge transfer."
         ]
       },
       {
         "name": "Deployment Automation & Release Orchestration",
         "description": "Automating the process of packaging, delivering, and releasing software changes.",
-        "improves": ["Deployment Frequency", "Lead Time for Changes", "Rework Rate"],
+        "improves": ["Deployment Frequency", "Change Lead Time", "Deployment Rework Rate", "Failed Deployment Recovery Time"],
         "levels": [
           "Foundational: Deployments are primarily guided by manual instructions or scripts unique to each environment.",
           "Improving: Teams use consistent scripting and partial automation, with some human oversight during releases.",
           "Accelerating: Deployments are triggered via pipeline steps or push-button processes across environments.",
-          "Leading: Fully automated end-to-end delivery, enabling frequent, reliable releases with minimal overhead."
+          "Leading: Fully automated end-to-end delivery with built-in rollback capabilities, enabling frequent, reliable releases with minimal overhead."
         ]
       },
       {
         "name": "Database Change Management",
         "description": "Aligning schema changes with application changes, versioned and deployed automatically.",
-        "improves": ["Deployment Frequency", "Change Failure Rate"],
+        "improves": ["Deployment Frequency", "Change Fail Rate"],
         "levels": [
           "Foundational: Database changes are performed with manual coordination, and teams are exploring structured versioning approaches.",
-          "Improving: Scripts for migrations exist with partial rollback strategies; consistency is being refined.",
+          "Improving: Database changes follow a defined, repeatable process with some ability to reverse changes; teams are working towards consistent application across environments.",
           "Accelerating: Automated, versioned migrations integrated into the CI/CD pipeline, ensuring predictable updates.",
-          "Leading: Zero-downtime migration and rollback/roll-forward options are in place, promoting seamless database updates."
+          "Leading: Database changes are delivered with no service disruption, with safe recovery options at every stage, giving teams the same confidence in data layer changes as in application changes."
         ]
       }
     ]
@@ -55,19 +55,19 @@
     "subDimensions": [
       {
         "name": "Loosely Coupled Architecture",
-        "description": "Ability for teams to make changes independently without tightly coupled dependencies.",
-        "improves": ["Deployment Frequency", "Lead Time for Changes", "Change Failure Rate"],
+        "description": "Ability for teams to make changes independently without tightly coupled dependencies, informed by Conway's Law so that system structure reflects intended team boundaries.",
+        "improves": ["Deployment Frequency", "Change Lead Time", "Change Fail Rate"],
         "levels": [
-          "Foundational: Systems are primarily monolithic, and teams are discussing ways to isolate components.",
-          "Improving: Some modularisation or microservices are introduced, with ongoing work to reduce interdependencies.",
-          "Accelerating: Services are independently deployable, supported by clearly defined data contracts.",
-          "Leading: Fully decoupled architecture, allowing teams to deliver changes swiftly with minimal cross-team coordination."
+          "Foundational: Systems are primarily monolithic, and teams are discussing ways to isolate components and align them to team ownership.",
+          "Improving: Some modularisation or microservices are introduced, with ongoing work to reduce interdependencies and align component ownership to team boundaries.",
+          "Accelerating: Services are independently deployable with clearly defined data contracts; team boundaries intentionally shape system design.",
+          "Leading: Fully decoupled architecture aligned to team structure, applying a reverse Conway maneuver to enable swifter delivery with minimal cross-team coordination."
         ]
       },
       {
         "name": "Cloud & Infrastructure Automation",
         "description": "On-demand, self-service, flexible environments for building, testing, and releasing changes.",
-        "improves": ["Lead Time for Changes", "Rework Rate", "Organisational Performance"],
+        "improves": ["Change Lead Time", "Deployment Rework Rate", "Organisational Performance"],
         "levels": [
           "Foundational: Servers are provisioned using some manual steps, with early exploration of cloud adoption.",
           "Improving: Basic cloud resources and partial infrastructure-as-code are in place, reducing manual efforts.",
@@ -77,25 +77,47 @@
       },
       {
         "name": "Platform Engineering",
-        "description": "Providing an internal platform that streamlines development and reduces cognitive load on teams.",
-        "improves": ["Lead Time for Changes", "Developer Experience", "Organisational Performance"],
+        "description": "Providing an internal platform that streamlines development, reduces cognitive load, and offers reliable self-service capabilities including documentation and shared tooling.",
+        "improves": ["Change Lead Time", "Developer Experience", "Organisational Performance"],
         "levels": [
           "Foundational: Individual teams manage infrastructure independently, with growing interest in a unified platform approach.",
-          "Improving: Basic shared services exist, offering partial self-service functionality for developers.",
-          "Accelerating: The platform is treated as a product, providing robust self-service capabilities to multiple teams.",
-          "Leading: A fully evolved internal developer platform, continuously improved through user feedback and iteration."
+          "Improving: Basic shared services exist, offering partial self-service functionality and early internal documentation for developers.",
+          "Accelerating: The platform is treated as a product, providing robust self-service capabilities and quality documentation to multiple teams.",
+          "Leading: A fully evolved internal developer platform, continuously improved through user feedback and featuring comprehensive, maintained documentation."
+        ]
+      },
+      {
+        "name": "Cognitive Load & Team Scope",
+        "description": "Matching the complexity and breadth of software ownership to each team's cognitive capacity, so that teams can build deep understanding of their domain without being stretched thin.",
+        "improves": ["Change Lead Time", "Deployment Frequency", "Developer Experience"],
+        "levels": [
+          "Foundational: Teams own broad or varied systems, and conversations about scope and domain boundaries are beginning.",
+          "Improving: Some effort is made to identify natural domain boundaries; teams are starting to right-size ownership to manageable domains.",
+          "Accelerating: System ownership is intentionally sized to team cognitive capacity, with domain complexity assessed when assigning responsibilities.",
+          "Leading: Teams maintain deep domain expertise within well-bounded scopes; architecture and team design evolve together to prevent cognitive overload and sustain delivery pace."
         ]
       }
     ]
   },
   {
-    "name": "Lean Product Management & Process",
-    "description": "Planning and delivery practices focused on rapid feedback, small batches, and limiting work in process.",
+    "name": "Lean Flow & Product Management",
+    "description": "Planning and delivery practices focused on rapid feedback, small batches, limiting work in process, and visualising the end-to-end flow of value.",
     "subDimensions": [
+      {
+        "name": "Value Stream Visibility",
+        "description": "Mapping and visualising the end-to-end flow of work from idea to production to surface bottlenecks and optimise delivery.",
+        "improves": ["Change Lead Time", "Deployment Frequency", "Organisational Performance"],
+        "levels": [
+          "Foundational: Teams have visibility into their own sprint work, with growing interest in understanding the broader flow of value across stages.",
+          "Improving: Key handoff points are identified, and boards or tools are emerging to visualise work across the delivery lifecycle.",
+          "Accelerating: A shared, end-to-end value stream view guides decisions and reveals bottlenecks, informing improvement priorities.",
+          "Leading: Continuous flow metrics are tracked and actioned in real time, with automated insights surfacing constraints and informing investment decisions."
+        ]
+      },
       {
         "name": "Working in Small Batches & Limiting WIP",
         "description": "Delivering value in small, frequent increments and minimising parallel work.",
-        "improves": ["Deployment Frequency", "Lead Time for Changes"],
+        "improves": ["Deployment Frequency", "Change Lead Time"],
         "levels": [
           "Foundational: Teams plan for larger releases with room to explore smaller batch sizes moving forward.",
           "Improving: Early adoption of smaller user stories, gradually reducing batch size in releases.",
@@ -128,13 +150,13 @@
     ]
   },
   {
-    "name": "Observability & Reliability",
-    "description": "Ensuring systems are measurable, monitored, and capable of rapid recovery from potential issues.",
+    "name": "Observability, Feedback & Reliability",
+    "description": "Ensuring systems are measurable, monitored, and capable of rapid recovery, while amplifying feedback at every stage of delivery.",
     "subDimensions": [
       {
         "name": "Monitoring & Alerting",
         "description": "Collecting telemetry (logs, metrics, traces) with actionable alerts for system health.",
-        "improves": ["Rework Rate", "Change Failure Rate"],
+        "improves": ["Deployment Rework Rate", "Change Fail Rate", "Failed Deployment Recovery Time"],
         "levels": [
           "Foundational: Basic monitoring is in place, and teams are refining approaches to address incidents proactively.",
           "Improving: Centralised logging and dashboards provide more thorough visibility, while teams refine alert quality.",
@@ -144,22 +166,22 @@
       },
       {
         "name": "Failure Recovery & Incident Response",
-        "description": "How quickly a team detects and restores service after an incident.",
-        "improves": ["Change Failure Rate", "Rework Rate"],
+        "description": "How quickly a team detects and restores service after an incident or failed deployment.",
+        "improves": ["Change Fail Rate", "Deployment Rework Rate", "Failed Deployment Recovery Time"],
         "levels": [
           "Foundational: Issues are addressed as they emerge, with incident response practices evolving.",
           "Improving: On-call rotations and structured post-incident reviews are introduced to enhance response consistency.",
           "Accelerating: Coordinated incident management, real-time collaboration, and systematic retrospectives strengthen recovery.",
-          "Leading: Automated rollback or restore, supported by blameless retrospectives that lead to reduction in rework rate."
+          "Leading: Automated rollback or restore, supported by blameless retrospectives that lead to measurable reductions in recovery time and rework."
         ]
       },
       {
-        "name": "Chaos Engineering / Proactive Resilience",
+        "name": "Chaos Engineering & Proactive Resilience",
         "description": "Introducing controlled experiments to validate system resilience and enhance fault tolerance.",
-        "improves": ["Rework Rate", "Organisational Learning"],
+        "improves": ["Deployment Rework Rate", "Organisational Learning", "Failed Deployment Recovery Time"],
         "levels": [
           "Foundational: Teams rely on existing tests and are beginning to explore proactive resilience strategies.",
-          "Improving: Occasional exercises (e.g. ‘game days’) to examine specific failure scenarios and refine responses.",
+          "Improving: Occasional exercises (e.g. game days) examine specific failure scenarios and refine responses.",
           "Accelerating: Regular chaos experiments integrated into pipelines, with systematic learning from injected failures.",
           "Leading: Resilience is integral to the culture; continuous exploration shapes architectural and operational decisions."
         ]
@@ -173,7 +195,7 @@
       {
         "name": "Shift-Left Security",
         "description": "Including security checks and practices early in development.",
-        "improves": ["Change Failure Rate", "Lead Time for Changes"],
+        "improves": ["Change Fail Rate", "Change Lead Time"],
         "levels": [
           "Foundational: Security considerations are introduced as teams review code or features, with further shifts planned.",
           "Improving: Automated security checks are partially integrated into pipelines, expanding to cover more scenarios.",
@@ -184,7 +206,7 @@
       {
         "name": "Secure Software Supply Chain",
         "description": "Safeguarding dependencies and ensuring code integrity from development through release.",
-        "improves": ["Change Failure Rate", "Rework Rate"],
+        "improves": ["Change Fail Rate", "Deployment Rework Rate"],
         "levels": [
           "Foundational: Teams begin tracking dependencies and addressing security considerations as they arise.",
           "Improving: Known vulnerabilities are scanned regularly, with enforcement policies in development.",
@@ -195,7 +217,7 @@
       {
         "name": "Compliance Automation",
         "description": "Automatically verifying adherence to required standards (audit logs, policy checks) within delivery pipelines.",
-        "improves": ["Lead Time for Changes", "Organisational Performance"],
+        "improves": ["Change Lead Time", "Organisational Performance"],
         "levels": [
           "Foundational: Compliance is monitored via manual checklists, with opportunities for partial automation under review.",
           "Improving: Some evidence is gathered automatically, and gating steps are being introduced in CI/CD.",
@@ -206,18 +228,18 @@
     ]
   },
   {
-    "name": "Culture & Leadership",
-    "description": "Organisational environment, leadership style, and collaboration practices supporting continuous improvement and high performance.",
+    "name": "Culture, Learning & Leadership",
+    "description": "Organisational environment, leadership style, collaboration practices, and commitment to continuous learning that support high performance and sustained improvement.",
     "subDimensions": [
       {
         "name": "Westrum Organisational Culture",
         "description": "A generative culture emphasising cooperation, open information sharing, and learning from experiences.",
-        "improves": ["Change Failure Rate", "Rework Rate", "Team Performance"],
+        "improves": ["Change Fail Rate", "Deployment Rework Rate", "Team Performance"],
         "levels": [
           "Foundational: The organisation is working towards open communication, with efforts to learn from outcomes.",
           "Improving: Processes are in place to encourage collaboration, moving beyond departmental boundaries.",
           "Accelerating: Greater generative behaviours emerge; teams share risks, and insights flow freely.",
-          "Leading: A truly generative culture where all voices are heard, and learning from any setback is the norm."
+          "Leading: A truly generative culture where all voices are heard, and learning from any experience is the norm."
         ]
       },
       {
@@ -233,13 +255,35 @@
       },
       {
         "name": "Team Autonomy & Empowerment",
-        "description": "Providing teams with the freedom to choose tools, drive experiments, and deliver business value independently.",
-        "improves": ["Lead Time for Changes", "Deployment Frequency", "Job Satisfaction"],
+        "description": "Providing long-lived, stream-aligned teams with the freedom to choose tools, drive experiments, and deliver end-to-end business value independently and sustainably.",
+        "improves": ["Change Lead Time", "Deployment Frequency", "Job Satisfaction"],
         "levels": [
-          "Foundational: Teams are gaining additional decision-making capabilities and establishing local ownership.",
-          "Improving: Autonomy is growing, with teams selecting some methods and tools, supported by increased trust.",
-          "Accelerating: High levels of autonomy, with teams shaping their own processes and experiments to drive outcomes.",
-          "Leading: A fully empowered environment, aligned to clear strategic goals, where ownership and innovation thrive."
+          "Foundational: Teams are gaining additional decision-making capabilities and establishing local ownership of their delivery stream.",
+          "Improving: Autonomy is growing, with teams selecting some methods and tools, supported by increasing trust and more stable team membership.",
+          "Accelerating: High levels of autonomy, with stable long-lived teams shaping their own processes and experiments to drive outcomes across their value stream.",
+          "Leading: Fully empowered, long-lived teams aligned to clear value streams, where sustained ownership, low context-switching, and strategic alignment enable continuous innovation."
+        ]
+      },
+      {
+        "name": "Continuous Learning & Knowledge Sharing",
+        "description": "Building an organisation where learning is structured, shared, and embedded in daily practice through retrospectives, communities of practice, and accessible documentation.",
+        "improves": ["Organisational Performance", "Job Satisfaction", "Developer Experience", "Organisational Learning"],
+        "levels": [
+          "Foundational: Knowledge is shared informally, and teams are exploring structured approaches such as retrospectives or learning sessions.",
+          "Improving: Regular retrospectives, guilds, or tech talks are forming, establishing consistent channels for knowledge exchange.",
+          "Accelerating: Communities of practice and dedicated learning time enable structured skill development and documentation across the organisation.",
+          "Leading: A continuous learning culture is fully embedded, with internal knowledge platforms, peer learning, and blameless retrospectives driving ongoing growth."
+        ]
+      },
+      {
+        "name": "Team Interaction & Dependency Design",
+        "description": "Deliberately choosing how teams collaborate, consume services, and receive capability uplift — minimising unnecessary coupling while enabling each team to deliver independently.",
+        "improves": ["Change Lead Time", "Deployment Frequency", "Organisational Performance"],
+        "levels": [
+          "Foundational: Teams interact ad hoc, with dependencies managed informally and growing awareness of the cost of unplanned coordination.",
+          "Improving: Team interfaces and responsibilities are becoming clearer; teams are beginning to distinguish between close collaboration, service consumption, and facilitated capability building.",
+          "Accelerating: Interaction modes are intentionally selected per relationship; teams publish team APIs and track dependencies to reduce friction and unplanned coupling.",
+          "Leading: Interaction patterns are continuously reviewed and optimised; Conway's Law is applied consciously in team and system design, and enabling teams actively uplift stream-aligned teams to maximise independent delivery."
         ]
       }
     ]

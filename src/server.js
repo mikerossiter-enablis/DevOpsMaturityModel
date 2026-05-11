@@ -61,19 +61,27 @@ app.post('/set-state', (req, res) => {
   res.json({ success: true });
 });
 
-// All saved snapshots (for time series graph)
+app.get('/current-project', (req, res) => {
+  res.json({ project: currentProject });
+});
+
+// All saved snapshots (for time series graph), filtered to a specific project when ?project= is provided
 app.get('/state-files', (req, res) => {
+  const projectFilter = req.query.project !== undefined ? req.query.project : null;
   try {
     const files = fs.readdirSync(STATES_DIR)
       .filter(f => f.endsWith('.json'))
-      .sort()
-      .reverse();
+      .sort();
     const result = files.map(filename => {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(STATES_DIR, filename), 'utf8'));
-        return { filename, timestamp: data.timestamp, project: data.project, state: data.state };
+        return { filename, timestamp: data.timestamp, project: data.project || null, state: data.state };
       } catch (e) { return null; }
-    }).filter(Boolean);
+    }).filter(row => {
+      if (!row) return false;
+      if (projectFilter === null) return true;
+      return (row.project || null) === (projectFilter || null);
+    });
     res.json(result);
   } catch (e) {
     res.json([]);
