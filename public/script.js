@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const projectNameInput = document.getElementById("project-name-input");
       const stateFileInput = document.getElementById("state-file-input");
       let selectedLevels = {};
+      let fileHistory = [];
 
       const levelDescriptions = {
         1: "Foundational - Basic, ad-hoc practices.",
@@ -16,17 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
         4: "Leading - On-demand deployment, highly optimised DevOps practices."
       };
 
-      // Save State — download a JSON file and record a snapshot server-side
+      // Save State — append a history entry, download the full JSON, update server
       document.getElementById("save-state-btn").addEventListener("click", () => {
         const project = projectNameInput.value.trim();
         const state = getModelState();
-        const payload = {
-          project: project || null,
-          savedAt: new Date().toISOString(),
-          state
-        };
 
-        // Trigger browser download
+        fileHistory.push({ savedAt: new Date().toISOString(), state });
+
+        const payload = { project: project || null, history: fileHistory };
+
         const json = JSON.stringify(payload, null, 2);
         const blob = new Blob([json], { type: "application/json" });
         const url = URL.createObjectURL(blob);
@@ -35,17 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
           ? project.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
           : "devops-maturity";
         a.href = url;
-        a.download = `${slug}-${new Date().toISOString().split("T")[0]}.json`;
+        a.download = `${slug}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // Also record a snapshot server-side (for time series graph and gap analysis)
         fetch("/save-state", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ project: project || null, state })
+          body: JSON.stringify({ project: project || null, history: fileHistory })
         }).catch(() => {});
       });
 
@@ -62,23 +60,33 @@ document.addEventListener("DOMContentLoaded", () => {
         reader.onload = event => {
           try {
             const data = JSON.parse(event.target.result);
-            // Support both { state: {...}, project: "..." } and bare { selectedLevels: {...} }
-            const stateData = data.state || data;
-            const project = data.project || "";
+            let history, project, stateData;
+
+            if (Array.isArray(data.history) && data.history.length > 0) {
+              // New format: { project, history: [{ savedAt, state }, ...] }
+              history = data.history;
+              project = data.project || "";
+              stateData = history[history.length - 1].state;
+            } else {
+              // Old format: { project, savedAt, state } or bare { selectedLevels }
+              stateData = data.state || data;
+              project = data.project || "";
+              history = [{ savedAt: data.savedAt || new Date().toISOString(), state: stateData }];
+            }
 
             if (!stateData || !stateData.selectedLevels) {
               alert("Invalid state file — no selectedLevels found.");
               return;
             }
 
+            fileHistory = history;
             loadModelState(stateData);
             projectNameInput.value = project;
 
-            // Update server's in-memory state for gap analysis
             fetch("/set-state", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ project: project || null, state: stateData })
+              body: JSON.stringify({ project: project || null, history: fileHistory })
             }).catch(() => {});
           } catch (e) {
             alert("Could not read file. Please select a valid JSON state file.");

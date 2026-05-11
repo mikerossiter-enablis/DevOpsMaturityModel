@@ -8,56 +8,23 @@ const dimensions = require('../public/dimensions.json');
 const app = express();
 const PORT = process.env.PORT || 3131;
 
-const STATES_DIR = path.join(__dirname, '..', 'states');
-if (!fs.existsSync(STATES_DIR)) fs.mkdirSync(STATES_DIR, { recursive: true });
-
-// In-memory current state for gap analysis — populated on save or load
-let currentState = null;
+let currentHistory = [];
 let currentProject = null;
-
-// Auto-load most recent state file on startup so gap analysis works immediately
-(function loadLatestState() {
-  try {
-    const files = fs.readdirSync(STATES_DIR)
-      .filter(f => f.endsWith('.json'))
-      .sort()
-      .reverse();
-    if (files.length > 0) {
-      const data = JSON.parse(fs.readFileSync(path.join(STATES_DIR, files[0]), 'utf8'));
-      currentState = data.state;
-      currentProject = data.project || null;
-    }
-  } catch (e) {}
-})();
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 
-// Called when user saves — writes a timestamped snapshot and updates in-memory state
 app.post('/save-state', (req, res) => {
-  const { state, project } = req.body;
-  currentState = state;
+  const { project, history } = req.body;
   currentProject = project || null;
-
-  const ts = new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '');
-  const filename = `${ts}.json`;
-  try {
-    fs.writeFileSync(path.join(STATES_DIR, filename), JSON.stringify({
-      project: currentProject,
-      timestamp: new Date().toISOString(),
-      state
-    }, null, 2));
-    res.json({ success: true });
-  } catch (e) {
-    res.status(500).json({ error: 'Error writing snapshot' });
-  }
+  currentHistory = Array.isArray(history) ? history : [];
+  res.json({ success: true });
 });
 
-// Called when user loads a file — updates in-memory state only (no new snapshot)
 app.post('/set-state', (req, res) => {
-  const { state, project } = req.body;
-  currentState = state;
+  const { project, history } = req.body;
   currentProject = project || null;
+  currentHistory = Array.isArray(history) ? history : [];
   res.json({ success: true });
 });
 
@@ -65,35 +32,25 @@ app.get('/current-project', (req, res) => {
   res.json({ project: currentProject });
 });
 
-// All saved snapshots (for time series graph), filtered to a specific project when ?project= is provided
 app.get('/state-files', (req, res) => {
   const projectFilter = req.query.project !== undefined ? req.query.project : null;
-  try {
-    const files = fs.readdirSync(STATES_DIR)
-      .filter(f => f.endsWith('.json'))
-      .sort();
-    const result = files.map(filename => {
-      try {
-        const data = JSON.parse(fs.readFileSync(path.join(STATES_DIR, filename), 'utf8'));
-        return { filename, timestamp: data.timestamp, project: data.project || null, state: data.state };
-      } catch (e) { return null; }
-    }).filter(row => {
-      if (!row) return false;
-      if (projectFilter === null) return true;
-      return (row.project || null) === (projectFilter || null);
-    });
-    res.json(result);
-  } catch (e) {
-    res.json([]);
+  if (projectFilter !== null && (currentProject || null) !== (projectFilter || null)) {
+    return res.json([]);
   }
+  res.json(currentHistory.map(entry => ({
+    timestamp: entry.savedAt,
+    project: currentProject,
+    state: entry.state
+  })));
 });
 
 app.get('/gap-analysis', (req, res) => {
-  if (!currentState) {
+  const latestEntry = currentHistory[currentHistory.length - 1];
+  if (!latestEntry) {
     return res.send('<h1>Gap Analysis</h1><p>No state loaded. Save or load an assessment first.</p>');
   }
 
-  const selectedLevels = currentState.selectedLevels;
+  const selectedLevels = latestEntry.state.selectedLevels;
   let totalLevels = 0;
   let totalSubdimensions = 0;
   for (let d in selectedLevels) {
