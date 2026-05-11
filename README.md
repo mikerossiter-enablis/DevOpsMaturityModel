@@ -1,63 +1,155 @@
 <div align="center">
 
-# 🚀 DevOps Maturity Assessment Tool
+<h1>DevOps Maturity Assessment Tool</h1>
 
-**Assess. Track. Improve.**
+<p><strong>An internal Enablis tool for consultants to assess DevOps maturity,<br>track improvement over time, and generate gap analysis reports.</strong></p>
 
-A lightweight, local tool for measuring and driving DevOps adoption across your organisation.
-
----
-
-[🏁 Getting Started](#getting-started) · [✨ Features](#features) · [⚙️ How It Works](#how-it-works) · [🎛️ Customisation](#customisation)
+![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?logo=node.js&logoColor=white)
+![Dimensions](https://img.shields.io/badge/Dimensions-6-0078d4)
+![Sub-Dimensions](https://img.shields.io/badge/Sub--Dimensions-23-0078d4)
+![Maturity Levels](https://img.shields.io/badge/Maturity%20Levels-4-6f42c1)
 
 </div>
 
-## 🤔 Why This Tool?
+---
 
-Most DevOps transformations stall because teams lack a clear picture of where they are and where they need to go. This tool gives you that picture — a structured, data-driven assessment across six integrated dimensions, paired with gap analysis and time-series tracking to keep improvement efforts honest and on course.
+<div align="center">
 
-It runs locally, stores state as plain JSON files on your machine, and supports multiple projects or organisations — each with their own isolated assessment history.
+[Overview](#overview) · [Dimensions](#dimensions) · [Maturity Levels](#maturity-levels) · [Getting Started](#getting-started) · [Consultant Workflow](#consultant-workflow) · [Foundations](#theoretical-foundations)
 
-## ✨ Features
+</div>
 
-| | |
-|---|---|
-| 📊 **Multi-Dimensional Assessment** | Evaluate maturity across 6 dimensions and 18 sub-dimensions on a 4-level scale |
-| 🗂️ **Project-Based State** | Run the model against different projects or organisations, each with their own saved history |
-| 🔍 **Gap Analysis Reports** | Generate printable reports showing current state, target state, and space for action plans |
-| 📈 **Time-Series Tracking** | Save snapshots over time and visualise adoption trends on an interactive graph |
-| 🎛️ **Fully Customisable** | Modify `dimensions.json` to tailor dimensions, levels, and descriptions to your context |
-| 💾 **Local JSON Storage** | State files are plain `.json` files saved to a `states/` directory — easy to inspect, back up, or share |
+---
 
-## 🗂️ Dimensions
+## Overview
 
-The assessment framework covers six areas that collectively represent DevOps capability:
+This tool provides a structured, evidence-based framework for assessing a client's DevOps capability across **6 integrated dimensions** and **23 sub-dimensions**. It is designed for use by Enablis consultants as a repeatable, client-facing artefact — from initial baseline through to tracking sustained improvement.
 
-| Dimension | Sub-Dimensions |
-|---|---|
-| 🔄 **Continuous Delivery & Automation** | Version Control & Trunk-Based Development · CI & Test Automation · Deployment Automation & Release Orchestration · Database Change Management |
-| 🏗️ **Architecture & Infrastructure** | Loosely Coupled Architecture · Cloud & Infrastructure Automation · Platform Engineering |
-| 📋 **Lean Product Management & Process** | Working in Small Batches & Limiting WIP · User-Centric & Hypothesis-Driven Development · Stable, Prioritised Backlog |
-| 🔭 **Observability & Reliability** | Monitoring & Alerting · Failure Recovery & Incident Response · Chaos Engineering / Proactive Resilience |
-| 🔒 **Security & Compliance** | Shift-Left Security · Secure Software Supply Chain · Compliance Automation |
-| 🤝 **Culture & Leadership** | Westrum Organisational Culture · Transformational Leadership · Team Autonomy & Empowerment |
+State is stored as plain JSON files, either locally on the consultant's machine or loaded from a previous session, making it straightforward to manage multiple concurrent engagements.
 
-Each sub-dimension is rated across four maturity levels:
+> **Scope:** This tool operates at the **organisation or team level** — it assesses capability, not a specific flow of work. The maturity model and Value Stream Mapping are complementary but distinct tools. See [Scope and Role of This Tool](#scope-and-role-of-this-tool) for details.
 
-| Level | Description |
-|---|---|
-| 🔴 **1 — Foundational** | Processes are being established; initial awareness and adoption efforts are underway |
-| 🟡 **2 — Improving** | Greater consistency and automation; teams actively refine capabilities |
-| 🟢 **3 — Accelerating** | Advanced automation and collaboration; feedback loops and rapid delivery are emphasised |
-| 🏆 **4 — Leading** | Continuous improvement is cultural; processes are dynamic, data-driven, and deliver high performance |
+---
 
-## 🏁 Getting Started
+## Dimensions
+
+The model covers six areas that collectively represent DevOps capability. Each sub-dimension is rated on a four-level scale: **Foundational**, **Improving**, **Accelerating**, and **Leading**.
+
+<details>
+<summary><strong>1. Continuous Delivery &amp; Automation</strong> &nbsp;·&nbsp; 4 sub-dimensions</summary>
+
+<br>
+
+Practices that enable fast, repeatable, and low-risk delivery of changes to production.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Version Control & Trunk-Based Development | Deployment Frequency, Change Lead Time |
+| Continuous Integration & Test Automation | Deployment Frequency, Change Fail Rate |
+| Deployment Automation & Release Orchestration | Deployment Frequency, Change Lead Time, Rework Rate |
+| Database Change Management | Deployment Frequency, Change Fail Rate |
+
+</details>
+
+<details>
+<summary><strong>2. Architecture &amp; Infrastructure</strong> &nbsp;·&nbsp; 4 sub-dimensions</summary>
+
+<br>
+
+Technical foundations that enable independent, small-batch changes while ensuring reliability and scalability. Informed by Conway's Law — system structure should reflect intended team boundaries.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Loosely Coupled Architecture | Deployment Frequency, Change Lead Time, Change Fail Rate |
+| Cloud & Infrastructure Automation | Change Lead Time, Rework Rate, Organisational Performance |
+| Platform Engineering | Change Lead Time, Developer Experience, Organisational Performance |
+| Cognitive Load & Team Scope | Change Lead Time, Deployment Frequency, Developer Experience |
+
+</details>
+
+<details>
+<summary><strong>3. Lean Flow &amp; Product Management</strong> &nbsp;·&nbsp; 4 sub-dimensions</summary>
+
+<br>
+
+Planning and delivery practices focused on rapid feedback, small batches, limiting work in process, and visualising the end-to-end flow of value.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Value Stream Visibility | Change Lead Time, Deployment Frequency, Organisational Performance |
+| Working in Small Batches & Limiting WIP | Deployment Frequency, Change Lead Time |
+| User-Centric & Hypothesis-Driven Development | Organisational Performance, Product Performance |
+| Stable, Prioritised Backlog | Team Productivity, Burnout Reduction, Organisational Performance |
+
+</details>
+
+<details>
+<summary><strong>4. Observability, Feedback &amp; Reliability</strong> &nbsp;·&nbsp; 3 sub-dimensions</summary>
+
+<br>
+
+Ensuring systems are measurable, monitored, and capable of rapid recovery.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Monitoring & Alerting | Rework Rate, Change Fail Rate, Recovery Time |
+| Failure Recovery & Incident Response | Change Fail Rate, Rework Rate, Recovery Time |
+| Chaos Engineering & Proactive Resilience | Rework Rate, Organisational Learning, Recovery Time |
+
+</details>
+
+<details>
+<summary><strong>5. Security &amp; Compliance</strong> &nbsp;·&nbsp; 3 sub-dimensions</summary>
+
+<br>
+
+Incorporating security throughout the software lifecycle without slowing delivery.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Shift-Left Security | Change Fail Rate, Change Lead Time |
+| Secure Software Supply Chain | Change Fail Rate, Rework Rate |
+| Compliance Automation | Change Lead Time, Organisational Performance |
+
+</details>
+
+<details>
+<summary><strong>6. Culture, Learning &amp; Leadership</strong> &nbsp;·&nbsp; 5 sub-dimensions</summary>
+
+<br>
+
+Organisational environment, leadership style, and commitment to continuous learning that underpin high performance and sustained improvement.
+
+| Sub-Dimension | DORA Outcomes |
+|:---|:---|
+| Westrum Organisational Culture | Change Fail Rate, Rework Rate, Team Performance |
+| Transformational Leadership | Productivity, Organisational Performance, Burnout Reduction |
+| Team Autonomy & Empowerment | Change Lead Time, Deployment Frequency, Job Satisfaction |
+| Continuous Learning & Knowledge Sharing | Organisational Performance, Developer Experience |
+| Team Interaction & Dependency Design | Change Lead Time, Deployment Frequency, Organisational Performance |
+
+</details>
+
+---
+
+## Maturity Levels
+
+| Level | Label | Description |
+|:---:|:---|:---|
+| `1` | **Foundational** | Processes are being established; initial awareness and adoption efforts are underway |
+| `2` | **Improving** | Greater consistency and automation; teams actively refine capabilities |
+| `3` | **Accelerating** | Advanced automation and collaboration; feedback loops and rapid delivery are emphasised |
+| `4` | **Leading** | Continuous improvement is cultural; processes are dynamic, data-driven, and deliver high performance |
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- **Node.js** (v18 or later) — [nodejs.org](https://nodejs.org)
+- **Node.js v18+** — [nodejs.org](https://nodejs.org)
 
-### Install and Run
+### Running the Tool
 
 ```bash
 git clone <repository-url>
@@ -74,86 +166,118 @@ To use a different port:
 PORT=8080 npm start
 ```
 
-### First Use
+---
 
-Open the tool and enter the name of the organisation or engagement you're assessing (e.g. `Acme Corp`) in the **Project** field at the top. The tool starts blank — load a previous state file to resume, or start a fresh assessment.
+## Scope and Role of This Tool
 
-### Stopping the Server
+This tool operates at the **organisation or team level**. It assesses capability — whether a team practises trunk-based development, has effective monitoring, operates with psychological safety, and so on. These capabilities are properties of the team regardless of which value stream is being examined. The model does not assess a specific flow of work; it assesses the team's ability to deliver.
 
-Press `Ctrl+C` in the terminal where the server is running.
+| Tool | Level | Purpose |
+|:---|:---|:---|
+| **Maturity Assessment** | Organisation / Team | Diagnoses capability gaps across DevOps dimensions |
+| **Outcome Mapping** | Engagement | Defines what the client wants to achieve |
+| **Value Stream Mapping** | Value Stream | Maps the specific flow of work to surface constraints blocking those outcomes |
 
-## 💾 State Files
+The maturity assessment feeds outcome mapping by surfacing where capability is weakest. Outcome mapping then determines which improvements matter most. VSM is a subsequent, separate activity that examines flow for a specific value stream in service of the agreed outcomes.
 
-Each time you click **Save State**, two things happen:
+> The facilitation guide for outcome mapping and VSM is maintained separately.
 
-1. A JSON file is downloaded to your machine via the browser
-2. A timestamped snapshot is written server-side to the `states/` directory (used by the Time Series Graph and Gap Analysis)
+---
 
-Downloaded files are named `<project>-YYYY-MM-DD.json` and can be loaded back at any time using **Load State**. The `states/` directory is excluded from git by default — manage it however suits your workflow.
+## Consultant Workflow
 
-## ⚙️ How It Works
+<details>
+<summary><strong>Step 1 &nbsp;—&nbsp; Define the Engagement</strong></summary>
 
-### 1. 🎯 Select Your Project
+<br>
 
-Open the tool and enter the name of the project or organisation you're assessing in the **Project** field. Each saved file is self-contained — you can manage multiple projects simply by saving and loading different files.
+Enter the client or project name in the **Project** field. Each saved state file is scoped to this label, so keep it consistent across sessions to maintain a coherent history.
 
-### 2. 🗺️ Survey Your Baseline
+</details>
 
-Start by understanding your current DevOps state. Identify the value stream you are assessing — the end-to-end flow of work from idea to customer value — and agree its boundaries with the team before continuing. Consider running the [DORA Quick Check](https://dora.dev/quickcheck/) or a similar questionnaire to establish an initial sense of performance.
+<details>
+<summary><strong>Step 2 &nbsp;—&nbsp; Establish Context</strong></summary>
 
-### 3. 📊 Assess Each Sub-Dimension
+<br>
 
-For each of the 18 sub-dimensions, select the maturity level that best reflects your current practice. The tool calculates an overall maturity score and percentage to give you a snapshot of your DevOps posture.
+Gain a broad understanding of the client's delivery organisation — its teams, technology, and delivery practices — before beginning the assessment. Consider using the [DORA Quick Check](https://dora.dev/quickcheck/) as a lightweight warm-up to surface initial perceptions of delivery performance.
 
-### 4. 🔍 Generate a Gap Analysis
+</details>
 
-Before generating the report, map the value stream you identified in step 2. Use [Value Stream Mapping](https://flowengineering.io/) to trace the flow of work, surface constraints, and make wait times and handoffs visible. The map gives you the context to interpret the gap analysis meaningfully — bottlenecks and delays often point directly to the sub-dimensions with the lowest maturity scores.
+<details>
+<summary><strong>Step 3 &nbsp;—&nbsp; Assess Each Sub-Dimension</strong></summary>
 
-Save your state and open the Gap Analysis report. It shows your current level alongside the next target level for every sub-dimension, with space to document improvement actions — a practical input for your transformation backlog. Use the value stream map to prioritise which gaps will have the greatest impact on flow.
+<br>
 
-### 5. 🔁 Plan and Iterate
+Work through the 23 sub-dimensions with the client team, selecting the maturity level that best reflects current practice. The tool calculates an overall maturity score and percentage as you go.
 
-Use a structured improvement approach:
+</details>
 
-| Step | Action |
-|---|---|
-| 🧭 **Understand the direction** | Define the broader goal your team is working towards |
-| 🔎 **Grasp current condition** | Use the assessment data to identify key constraints |
-| 🎯 **Set a target condition** | Pick a short-term milestone that moves you closer |
-| 🔄 **Iterate with PDCA cycles** | Run small experiments, check results, adjust |
+<details>
+<summary><strong>Step 4 &nbsp;—&nbsp; Generate a Gap Analysis</strong></summary>
 
-This aligns with the [Improvement Kata](https://dora.dev/guides/devops-culture-transform/) approach recommended by DORA.
+<br>
 
-### 6. 📈 Track Progress Over Time
+Save the current state and open the **Gap Analysis** report. It shows the current maturity level alongside the next target level for every sub-dimension, with space to document notes. This report gives the client a clear view of their capability landscape and opens the conversation about where improvement effort should be directed.
 
-Each time you save, a timestamped snapshot is stored. Use the **Time Series Graph** to visualise adoption trends across all dimensions — spot improvements, stagnation, or regression at a glance.
+</details>
 
-### 7. 📏 Align with DORA Metrics
+<details>
+<summary><strong>Step 5 &nbsp;—&nbsp; Move to Outcome Mapping</strong></summary>
 
-Use your assessment alongside the four key DORA metrics to measure real-world delivery performance:
+<br>
 
-| Metric | What It Measures |
-|---|---|
-| 🚀 **Deployment Frequency** | How often code reaches production |
-| ⏱️ **Lead Time for Changes** | Time from commit to production |
-| 💥 **Change Failure Rate** | Percentage of deployments causing failures |
-| 🛠️ **Rework Rate** | Speed of recovery from incidents |
+The gap analysis is an input into outcome mapping, not a direct action plan. Use it to inform a structured conversation about what the client wants to achieve. Outcome mapping, VSM, and the improvement cycle that follows are covered in the facilitation guide.
 
-### 📚 Further Reading
+</details>
 
-- [**Westrum Organisational Culture**](https://itrevolution.com/articles/westrums-organizational-model-in-tech-orgs/) — IT Revolution
-- [**Accelerate**](https://itrevolution.com/product/accelerate/) — Nicole Forsgren, Jez Humble, Gene Kim
-- [**The DevOps Handbook**](https://itrevolution.com/product/the-devops-handbook-second-edition/) — Gene Kim, Jez Humble, Patrick Debois, John Willis, Nicole Forsgren
-- [**Team Topologies**](https://teamtopologies.com/book) — Matthew Skelton, Manuel Pais
-- [**Flow Engineering**](https://flowengineering.io/) — Steve Pereira, Andrew Davis
-- [**DORA Capability Catalog**](https://dora.dev/capabilities/)
+<details>
+<summary><strong>Step 6 &nbsp;—&nbsp; Track Progress Over Time</strong></summary>
 
-## 🎛️ Customisation
+<br>
 
-The tool's structure is defined in `dimensions.json`. Each dimension has a `name` and an array of `subDimensions`, each containing level descriptions. Modify this file to:
+Each time you save state, a timestamped snapshot is stored server-side. Use the **Time Series Graph** to visualise trends across all dimensions between sessions — useful for demonstrating improvement and identifying stagnation or regression over the course of an engagement.
 
-- Add, remove, or reorder dimensions
-- Adjust level descriptions to match your organisation's language
-- Remove sub-dimensions that don't apply to your context
+</details>
 
-Changes take effect on the next page load — no rebuild required.
+---
+
+## State Files
+
+Clicking **Save State** downloads a JSON file to the browser and writes a timestamped snapshot to the server's in-memory history. Downloaded files are named `<project>.json` (slugified from the project name) and can be reloaded at any time with **Load State**.
+
+> **Note:** The server holds history in memory — restarting the process clears it. Load a previously saved file at the start of each session to restore the snapshot history for the Time Series Graph.
+
+---
+
+## Customisation
+
+The model's structure is defined in `public/dimensions.json`. Each dimension has a `name`, `description`, and an array of `subDimensions`, each with `levels` and a list of `improves` outcomes. Edit this file to:
+
+- Add, remove, or reorder dimensions or sub-dimensions
+- Adjust level descriptions to match client context or industry language
+- Add or modify the DORA/outcome `improves` tags
+
+> Changes take effect on the next page load — no rebuild required.
+
+---
+
+## Theoretical Foundations
+
+| Source | Relevance |
+|:---|:---|
+| [**Accelerate**](https://itrevolution.com/product/accelerate/) — Forsgren, Humble, Kim | Foundation for the four DORA metrics and the capabilities that predict software delivery performance |
+| [**DORA Capability Catalog**](https://dora.dev/capabilities/) | Source for technical, process, and cultural capabilities linked to delivery outcomes |
+| [**Team Topologies**](https://teamtopologies.com/book) — Skelton, Pais | Informs cognitive load management, team interaction modes, stream-aligned teams, and platform engineering |
+| [**The DevOps Handbook**](https://itrevolution.com/product/the-devops-handbook-second-edition/) — Kim, Humble, Debois, Willis, Forsgren | Underpins the three ways: flow, feedback, and continual learning |
+| [**Flow Engineering**](https://flowengineering.io/) — Pereira, Davis | Underpins the broader improvement methodology (outcome mapping, VSM, constraint-led iteration) used alongside this tool |
+| [**Westrum's Organisational Model**](https://itrevolution.com/articles/westrums-organizational-model-in-tech-orgs/) — Westrum | Defines the generative culture construct used in the Culture dimension |
+| **Conway's Law** — Melvin Conway | Informs loosely coupled architecture, team interaction design, and the reverse Conway maneuver |
+
+---
+
+<div align="center">
+
+*Built by Enablis &nbsp;·&nbsp; For internal consultant use*
+
+</div>
