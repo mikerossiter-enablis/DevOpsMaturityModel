@@ -53,8 +53,10 @@ app.get('/gap-analysis', (req, res) => {
   const selectedLevels = latestEntry.state.selectedLevels;
   let totalLevels = 0;
   let totalSubdimensions = 0;
+  let naSubdimensions = 0;
   for (let d in selectedLevels) {
     for (let s in selectedLevels[d]) {
+      if (selectedLevels[d][s] === 'na') { naSubdimensions++; continue; }
       const val = parseInt(selectedLevels[d][s]);
       if (!isNaN(val) && val > 0) { totalLevels += val; totalSubdimensions++; }
     }
@@ -64,6 +66,7 @@ app.get('/gap-analysis', (req, res) => {
   const percentage = totalSubdimensions > 0 ? ((averageLevel / 4) * 100).toFixed(1) : 0;
   const levelDescriptions = { 1: 'Foundational', 2: 'Improving', 3: 'Accelerating', 4: 'Leading' };
   const levelLabel = levelDescriptions[roundedLevel] || 'N/A';
+  const naNote = naSubdimensions > 0 ? ` &middot; ${naSubdimensions} marked not applicable` : '';
   const projectLabel = currentProject ? `<p class="project-label">Project: <strong>${currentProject}</strong></p>` : '';
 
   let html = `<!DOCTYPE html><html><head>
@@ -88,7 +91,7 @@ app.get('/gap-analysis', (req, res) => {
     ${projectLabel}
     <div class="level-summary">
       <h2>Current Level: ${roundedLevel} &mdash; ${levelLabel}</h2>
-      <p>${percentage}% complete &middot; ${totalSubdimensions} sub-dimensions assessed</p>
+      <p>${percentage}% complete &middot; ${totalSubdimensions} sub-dimensions assessed${naNote}</p>
     </div>
     <p>This report lists the current maturity levels along with a gap analysis to help you determine improvements needed to reach the next level. Please review each entry and add your own notes where indicated.</p>
     <div class="button-container"><button onclick="window.print()">Print / Save as PDF</button></div>
@@ -104,14 +107,23 @@ app.get('/gap-analysis', (req, res) => {
     for (let s in selectedLevels[d]) {
       const subIndex = parseInt(s);
       const subDimension = dimension.subDimensions[subIndex];
-      const levelNumber = parseInt(selectedLevels[d][s]);
-      const currentLevelText = subDimension.levels[levelNumber - 1] || 'Not selected';
-      const nextLevelText = levelNumber < subDimension.levels.length ? subDimension.levels[levelNumber] : 'N/A';
-      html += `<tr>
-        <td>${dimension.name}</td><td>${subDimension.name}</td>
-        <td>${currentLevelText}</td><td>${nextLevelText}</td>
-        <td><textarea placeholder="Describe actions to reach the next level"></textarea></td>
-      </tr>`;
+      const rawValue = selectedLevels[d][s];
+      if (rawValue === 'na') {
+        html += `<tr style="background-color: #f5f5f5; color: #888;">
+          <td>${dimension.name}</td><td>${subDimension.name}</td>
+          <td colspan="2" style="font-style: italic; color: #aaa;">Not applicable to this engagement</td>
+          <td><textarea placeholder="Reason or context (optional)"></textarea></td>
+        </tr>`;
+      } else {
+        const levelNumber = parseInt(rawValue);
+        const currentLevelText = subDimension.levels[levelNumber - 1] || 'Not selected';
+        const nextLevelText = levelNumber < subDimension.levels.length ? subDimension.levels[levelNumber] : 'At Leading level — maintain and continue improving';
+        html += `<tr>
+          <td>${dimension.name}</td><td>${subDimension.name}</td>
+          <td>${currentLevelText}</td><td>${nextLevelText}</td>
+          <td><textarea placeholder="Describe actions to reach the next level"></textarea></td>
+        </tr>`;
+      }
     }
   }
 

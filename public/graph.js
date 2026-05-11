@@ -32,12 +32,15 @@ Promise.all([
           const data = stateData.map(state => {
             const levelsObj = state.selectedLevels[dimensionIndex] || {};
             let total = 0;
+            let applicableCount = 0;
             for (let i = 0; i < subCount; i++) {
-              let val = levelsObj[i];
-              val = (val === undefined || val === '') ? 1 : parseInt(val, 10);
-              total += val;
+              const val = levelsObj[i];
+              if (val === 'na') continue;
+              const numVal = (val === undefined || val === '') ? 1 : parseInt(val, 10);
+              total += numVal;
+              applicableCount++;
             }
-            return { x: state.timestamp, y: (total / (4 * subCount)) * 100 };
+            return { x: state.timestamp, y: applicableCount > 0 ? (total / (4 * applicableCount)) * 100 : null };
           });
 
           return {
@@ -45,7 +48,8 @@ Promise.all([
             data,
             borderColor: getRandomColor(),
             tension: 0.1,
-            fill: false
+            fill: false,
+            spanGaps: true
           };
         });
 

@@ -137,23 +137,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectElements = document.querySelectorAll(`.sub-dimension-${dimensionIndex} select.level-selector`);
         let total = 0;
         let count = 0;
+        let naCount = 0;
 
         if (selectElements.length > 0) {
           selectElements.forEach(select => {
             if (select.value === "") return;
+            if (select.value === "na") { naCount++; return; }
             total += parseInt(select.value);
             count++;
           });
         } else {
           if (selectedLevels[dimensionIndex]) {
             Object.values(selectedLevels[dimensionIndex]).forEach(val => {
-              if (val !== "" && val !== undefined) { total += val; count++; }
+              if (val === "" || val === undefined) return;
+              if (val === "na") { naCount++; return; }
+              total += parseInt(val); count++;
             });
           }
         }
 
         const dimensionSubCount = dimensions[dimensionIndex].subDimensions.length;
-        if (count < dimensionSubCount) {
+        if ((count + naCount) < dimensionSubCount) {
           const progressBar = document.getElementById(`progress-bar-${dimensionIndex}`);
           if (progressBar) { progressBar.style.width = "0%"; progressBar.textContent = ""; }
           const thinProgressBar = document.getElementById(`progress-bar-closed-${dimensionIndex}`);
@@ -162,14 +166,16 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const percentage = (total / count / 4) * 100;
+        const allNA = count === 0;
+        const percentage = allNA ? 100 : (total / count / 4) * 100;
 
         const progressBar = document.getElementById(`progress-bar-${dimensionIndex}`);
         if (progressBar) {
           progressBar.style.width = `${percentage}%`;
-          progressBar.textContent = `${percentage.toFixed(1)}% Complete`;
+          progressBar.textContent = allNA ? "N/A" : `${percentage.toFixed(1)}% Complete`;
           progressBar.className = "progress-bar";
-          if (percentage === 100) progressBar.classList.add("colour5");
+          if (allNA) progressBar.classList.add("colour-na");
+          else if (percentage === 100) progressBar.classList.add("colour5");
           else if (percentage > 75) progressBar.classList.add("colour4");
           else if (percentage > 50) progressBar.classList.add("colour3");
           else if (percentage > 25) progressBar.classList.add("colour2");
@@ -181,7 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
           thinProgressBar.style.width = `${percentage}%`;
           thinProgressBar.textContent = "";
           thinProgressBar.className = "progress-bar progress-bar-thin";
-          if (percentage === 100) thinProgressBar.classList.add("colour5");
+          if (allNA) thinProgressBar.classList.add("colour-na");
+          else if (percentage === 100) thinProgressBar.classList.add("colour5");
           else if (percentage > 75) thinProgressBar.classList.add("colour4");
           else if (percentage > 50) thinProgressBar.classList.add("colour3");
           else if (percentage > 25) thinProgressBar.classList.add("colour2");
@@ -193,23 +200,28 @@ document.addEventListener("DOMContentLoaded", () => {
       function updateAverageLevel() {
         let totalLevels = 0;
         let totalSubdimensions = 0;
-        let allSelected = true;
+        let allResponded = true;
 
         dimensions.forEach((dimension, dimensionIndex) => {
           dimension.subDimensions.forEach((subDim, subDimIndex) => {
-            totalSubdimensions++;
-            if (!selectedLevels[dimensionIndex] ||
-              selectedLevels[dimensionIndex][subDimIndex] === undefined ||
-              selectedLevels[dimensionIndex][subDimIndex] === "") {
-              allSelected = false;
-            } else {
-              totalLevels += selectedLevels[dimensionIndex][subDimIndex];
+            const val = selectedLevels[dimensionIndex]?.[subDimIndex];
+            if (val === undefined || val === "") {
+              allResponded = false;
+            } else if (val !== "na") {
+              totalLevels += parseInt(val);
+              totalSubdimensions++;
             }
           });
         });
 
-        if (!allSelected) {
+        if (!allResponded) {
           averageLevelDisplay.textContent = "Please select levels for each dimension";
+          levelDescriptionDisplay.textContent = "";
+          return;
+        }
+
+        if (totalSubdimensions === 0) {
+          averageLevelDisplay.textContent = "All sub-dimensions marked as not applicable";
           levelDescriptionDisplay.textContent = "";
           return;
         }
@@ -307,6 +319,11 @@ document.addEventListener("DOMContentLoaded", () => {
                   select.appendChild(option);
                 });
 
+                const naOption = document.createElement("option");
+                naOption.value = "na";
+                naOption.textContent = "N/A — Not applicable to this engagement";
+                select.appendChild(naOption);
+
                 if (selectedLevels[dimensionIndex] &&
                   selectedLevels[dimensionIndex][subDimIndex] !== undefined &&
                   selectedLevels[dimensionIndex][subDimIndex] !== "") {
@@ -316,7 +333,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 select.addEventListener("change", () => {
-                  selectedLevels[dimensionIndex][subDimIndex] = select.value === "" ? "" : parseInt(select.value);
+                  if (select.value === "") selectedLevels[dimensionIndex][subDimIndex] = "";
+                  else if (select.value === "na") selectedLevels[dimensionIndex][subDimIndex] = "na";
+                  else selectedLevels[dimensionIndex][subDimIndex] = parseInt(select.value);
                   updateProgress(dimensionIndex);
                 });
 

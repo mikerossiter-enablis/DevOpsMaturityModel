@@ -255,6 +255,12 @@ button:active {
   background: linear-gradient(90deg, #1e8449, #27ae60);
 }
 
+.progress-bar.colour-na {
+  background: linear-gradient(90deg, #374151, #4b5563);
+  color: #9ca3af;
+  font-style: italic;
+}
+
 /* === Project Banner === */
 #project-banner {
   display: flex;
