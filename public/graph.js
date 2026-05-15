@@ -45,7 +45,7 @@ Promise.all([
             for (let i = 0; i < subCount; i++) {
               const val = levelsObj[i];
               if (val === 'na') continue;
-              const numVal = (val === undefined || val === '') ? 1 : parseInt(val, 10);
+              const numVal = (val === undefined || val === '') ? 0 : parseInt(val, 10);
               total += numVal;
               applicableCount++;
             }
